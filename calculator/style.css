@@ -1,0 +1,150 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+}
+
+.calculator {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.display {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    word-wrap: break-word;
+    word-break: break-all;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.previous-operand {
+    color: #8e8ea0;
+    font-size: 18px;
+    font-weight: 300;
+    min-height: 24px;
+    margin-bottom: 4px;
+}
+
+.current-operand {
+    color: #2d3748;
+    font-size: 42px;
+    font-weight: 300;
+    letter-spacing: -1px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.btn {
+    border: none;
+    border-radius: 12px;
+    font-size: 22px;
+    font-weight: 500;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    font-family: inherit;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-number {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    color: #2d3748;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.btn-number:hover {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.btn-operator {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+.btn-operator:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
+}
+
+.btn-clear {
+    background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(252, 92, 125, 0.4);
+}
+
+.btn-clear:hover {
+    background: linear-gradient(135deg, #eb4b6c 0%, #596bea 100%);
+}
+
+.btn-equals {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(245, 87, 108, 0.4);
+}
+
+.btn-equals:hover {
+    background: linear-gradient(135deg, #df82ea 0%, #e4465b 100%);
+}
+
+.span-2 {
+    grid-column: span 2;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .calculator {
+        padding: 20px;
+    }
+
+    .btn {
+        padding: 20px;
+        font-size: 20px;
+    }
+
+    .current-operand {
+        font-size: 36px;
+    }
+
+    .previous-operand {
+        font-size: 16px;
+    }
+}
