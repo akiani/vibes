@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chopin Sonata Player</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/vexflow@4.2.3/build/cjs/vexflow.js"></script>
+    <script src="https://unpkg.com/tone@14.8.49/build/Tone.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎹 Chopin Sonata in C Minor</h1>
+            <p class="subtitle">AI-Generated • Real-time Sheet Music • Interactive Editor</p>
+        </header>
+
+        <div class="player-section">
+            <div class="controls">
+                <button id="playBtn" class="btn-primary">
+                    <span class="icon">▶</span> Play
+                </button>
+                <button id="pauseBtn" class="btn-secondary" disabled>
+                    <span class="icon">⏸</span> Pause
+                </button>
+                <button id="stopBtn" class="btn-secondary" disabled>
+                    <span class="icon">⏹</span> Stop
+                </button>
+                <div class="tempo-control">
+                    <label for="tempo">Tempo: <span id="tempoValue">120</span> BPM</label>
+                    <input type="range" id="tempo" min="60" max="180" value="120">
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="editor-controls">
+            <h3>Edit Mode</h3>
+            <div class="edit-buttons">
+                <button id="addNoteBtn" class="btn-edit">+ Add Note</button>
+                <button id="deleteNoteBtn" class="btn-edit">− Delete Note</button>
+                <button id="changeNoteBtn" class="btn-edit">✎ Change Pitch</button>
+                <button id="regenerateBtn" class="btn-edit">🔄 Regenerate Section</button>
+            </div>
+            <div class="note-selector" id="noteSelector" style="display: none;">
+                <select id="pitchSelect">
+                    <option value="C4">C4</option>
+                    <option value="D4">D4</option>
+                    <option value="E4">E4</option>
+                    <option value="F4">F4</option>
+                    <option value="G4">G4</option>
+                    <option value="A4">A4</option>
+                    <option value="B4">B4</option>
+                    <option value="C5">C5</option>
+                </select>
+                <select id="durationSelect">
+                    <option value="4">Quarter</option>
+                    <option value="8">Eighth</option>
+                    <option value="2">Half</option>
+                    <option value="1">Whole</option>
+                </select>
+                <button id="applyNoteBtn" class="btn-primary">Apply</button>
+            </div>
+        </div>
+
+        <div class="sheet-music-container">
+            <h3>Sheet Music <span class="measure-info" id="measureInfo">Measure 1</span></h3>
+            <div id="sheetMusic" class="sheet-music"></div>
+        </div>
+
+        <div class="info-panel">
+            <h3>About This Sonata</h3>
+            <p>This AI-generated sonata follows the structure and style of Chopin's piano works,
+            featuring lyrical melodies, rich harmonies, and expressive dynamics. The piece is in
+            C minor and follows a classical sonata form.</p>
+            <div class="movement-info">
+                <strong>Movement:</strong> Allegro maestoso<br>
+                <strong>Key:</strong> C minor<br>
+                <strong>Time Signature:</strong> 4/4
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
