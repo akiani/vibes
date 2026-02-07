@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <button id="new-chat" class="btn-new-chat">+ New Chat</button>
+      <div id="session-list" class="session-list"></div>
+    </aside>
+    <main class="chat-area">
+      <div id="empty-state" class="empty-state">
+        <p class="empty-title">Start a conversation</p>
+        <p class="empty-subtitle">Create a new chat to begin</p>
+      </div>
+      <div id="messages" class="messages"></div>
+      <form id="chat-form" class="chat-form" style="display:none">
+        <textarea id="message-input" placeholder="Type a message..." rows="1"></textarea>
+        <button type="submit" id="send-btn" class="btn-send">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </form>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
