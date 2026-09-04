@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
 
-// Questions that show off multi-hop traversal. The last two can only be
-// answered by combining a patient's conditions with their medications.
+// The last two can only be answered by combining a patient's conditions with
+// their medications; the lupus one isn't in the graph at all.
 const EXAMPLES = [
-  'What is type 2 diabetes and how is it diagnosed?',
   'Which conditions cause fatigue?',
   'Patient P-002 is on several medications — anything to watch for?',
   'Is anything Ada Whitfield takes risky given her conditions?',
+  'What treats lupus?',
 ]
 
 export default function App() {
@@ -16,9 +16,7 @@ export default function App() {
   const [error, setError] = useState(null)
   const bottomRef = useRef(null)
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, loading])
+  useEffect(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), [messages, loading])
 
   async function send(text) {
     const question = text.trim()
@@ -35,18 +33,13 @@ export default function App() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // Strip the trace before sending: the API only wants role and content.
         body: JSON.stringify({
           messages: history.map(({ role, content }) => ({ role, content })),
         }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.detail || `Request failed (${res.status})`)
-
-      setMessages([
-        ...history,
-        { role: 'assistant', content: data.answer, trace: data.trace },
-      ])
+      setMessages([...history, { role: 'assistant', content: data.answer, trace: data.trace }])
     } catch (err) {
       setError(err.message)
     } finally {
@@ -59,9 +52,9 @@ export default function App() {
       <hgroup>
         <h1>Medical KG Chatbot</h1>
         <p>
-          Every answer is grounded in a knowledge graph — expand the trace under
-          any reply to see the GraphQL queries behind it. Browse the graph
-          yourself at <a href="/graphql" target="_blank" rel="noreferrer">/graphql</a>.
+          Every answer is grounded in a knowledge graph — expand the trace under any
+          reply to see the GraphQL queries behind it. Browse the graph yourself at{' '}
+          <a href="/graphql" target="_blank" rel="noreferrer">/graphql</a>.
         </p>
       </hgroup>
 
@@ -69,32 +62,24 @@ export default function App() {
         <article>
           <p><strong>Try asking:</strong></p>
           {EXAMPLES.map((q) => (
-            <button key={q} className="outline example" onClick={() => send(q)}>
-              {q}
-            </button>
+            <button key={q} className="outline example" onClick={() => send(q)}>{q}</button>
           ))}
         </article>
       )}
 
       {messages.map((msg, i) => (
-        <Message key={i} message={msg} />
+        <article key={i} className={`msg ${msg.role}`}>
+          <header>{msg.role === 'user' ? 'You' : 'Assistant'}</header>
+          <div className="content">{msg.content}</div>
+          {msg.trace?.length > 0 && <Trace trace={msg.trace} />}
+        </article>
       ))}
 
       {loading && <article aria-busy="true">Querying the graph…</article>}
-      {error && (
-        <article className="error">
-          <strong>Error:</strong> {error}
-        </article>
-      )}
-
+      {error && <article className="error"><strong>Error:</strong> {error}</article>}
       <div ref={bottomRef} />
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          send(input)
-        }}
-      >
+      <form onSubmit={(e) => { e.preventDefault(); send(input) }}>
         <fieldset role="group">
           <input
             type="text"
@@ -103,39 +88,20 @@ export default function App() {
             onChange={(e) => setInput(e.target.value)}
             disabled={loading}
           />
-          <button type="submit" disabled={loading || !input.trim()}>
-            Send
-          </button>
+          <button type="submit" disabled={loading || !input.trim()}>Send</button>
         </fieldset>
       </form>
 
-      <footer>
-        <small>
-          Fictional demonstration data. Not medical advice.
-        </small>
-      </footer>
+      <footer><small>Fictional demonstration data. Not medical advice.</small></footer>
     </main>
   )
 }
 
-function Message({ message }) {
-  const isUser = message.role === 'user'
-  return (
-    <article className={isUser ? 'msg user' : 'msg assistant'}>
-      <header>{isUser ? 'You' : 'Assistant'}</header>
-      <div className="content">{message.content}</div>
-      {message.trace?.length > 0 && <Trace trace={message.trace} />}
-    </article>
-  )
-}
-
-// The point of the whole demo: the queries that produced the answer above.
+// The point of the demo: the queries that produced the answer above.
 function Trace({ trace }) {
   return (
     <details className="trace">
-      <summary>
-        {trace.length} graph {trace.length === 1 ? 'query' : 'queries'}
-      </summary>
+      <summary>{trace.length} graph {trace.length === 1 ? 'query' : 'queries'}</summary>
       {trace.map((step, i) => (
         <div key={i} className="step">
           <small>{step.ok ? `Query ${i + 1}` : `Query ${i + 1} — rejected`}</small>

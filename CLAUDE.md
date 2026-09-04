@@ -53,20 +53,20 @@ medical knowledge graph, and cannot answer from its own recall — see
   it can ask for — never hand-write a second description of the graph. The loop
   collects a `trace` of every query and result, which the frontend renders.
 
-- **Data flow** (`data.py` → `graph.py` → `schema.py`): `data.py` holds `NODES`
-  and `EDGES` as plain dicts; `graph.py` builds adjacency indices at import time
-  and is the only module that touches storage; `schema.py` exposes Strawberry
-  types whose relationship fields resolve through `graph.neighbors()`. Adding an
-  entity type means editing those three files in that order.
+- **`backend/app/kg.py`** holds the whole graph layer in three ordered sections:
+  `NODES`/`EDGES` as plain dicts, the adjacency index built at import time, then
+  the Strawberry types whose relationship fields resolve through `neighbors()`.
+  Adding an entity type means editing those three sections in that order.
+  `neighbors()` and `find()` are the only functions that touch storage — they are
+  the seam to replace with a real graph database.
 
-- Relations listed in `EDGES` are directed. `INTERACTS_WITH` is declared once and
-  symmetrised in `graph.py` via `SYMMETRIC_RELATIONS` — do not add both
-  directions to `data.py`.
+- Relations in `EDGES` are directed. `INTERACTS_WITH` is declared once and
+  symmetrised via `SYMMETRIC_RELATIONS` — do not write both directions by hand.
 
 - `backend/smoke_test.py` exercises the graph and GraphQL layers without an API
   key, and asserts the two multi-hop findings the demo relies on (a patient on
   two interacting drugs, and a patient taking a drug contraindicated by their own
-  condition). Run it after any change to `data.py`.
+  condition). Run it after any change to the data in `kg.py`.
 
 ## Future Enhancements (from README)
 
