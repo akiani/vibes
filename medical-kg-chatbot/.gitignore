@@ -1,0 +1,11 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Secrets -- .env.example is committed, .env is not
+.env
+
+# Node
+node_modules/
+dist/
